@@ -45,8 +45,12 @@ spec:
         runAsNonRoot: true
         runAsUser: 1001  # Replace with a valid non-root user ID
       script: |
-         #!/bin/bash
-         set -e
-         python -m pip install --upgrade pip wheel
-         pip install -r requirements.txt
-         nosetests $(params.args)
+        #!/bin/bash
+        set -e
+        if [ -f /full/path/to/requirements.txt ]; then
+        python -m pip install --upgrade pip wheel
+        pip install -r /full/path/to/requirements.txt
+        nosetests $(params.args)
+        else
+        echo "ERROR: 'requirements.txt' file not found at /full/path/to/requirements.txt."
+        fi
